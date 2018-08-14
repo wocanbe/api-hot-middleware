@@ -2,6 +2,7 @@
   "name": "api-hot-middleware",
   "version": "0.0.1",
   "author": "584069777@qq.com",
+  "license": "ISC",
   "description": "a api middleware",
   "main": "index.js",
   "scripts": {
@@ -15,5 +16,13 @@
   ],
   "dependencies": {
     "express": "^4.14.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wocanbe/api-hot-middleware.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wocanbe/api-hot-middleware.git/issues"
+  },
+  "homepage": "https://github.com/wocanbe/api-hot-middleware.git#readme",
 }
