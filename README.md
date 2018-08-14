@@ -1,6 +1,8 @@
 # a api middleware hotloaded
 
 ## demo
+
+### 配置
 ```javascript
   var express = require('express')
   var bodyParser = require('body-parser')
@@ -10,16 +12,40 @@
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   const apiConfig = [{
-    path:'/subject/:userId',
-    file:'/userInfo'
-  },
-  {
     path:'/demo/:id',
     file:'/demo'
   }]
   app.use('/api', apiMiddleware(apiConfig));
 ```
-## api demo
+
+备注：
+ - 所有的模拟数据均位于api目录下，目录路径对应请求路径，简单的请求路径直接对应文件相对路径
+ - 特殊的如urlParams，需要配置对应规则，详见示例
+
+### 书写模拟数据
+
+简单示例
+
+```javascript
+exports.getData = function(method, data) {
+  return [{
+    id: 1,
+    txt: '健康饮食'
+  }, {
+    id: 2,
+    txt: '心理健康'
+  }, {
+    id: 3,
+    txt: '冬令进补'
+  }, {
+    id: 4,
+    txt: '运动补水'
+  }]
+}
+```
+
+复杂示例
+
 ```javascript
   const Mock = require('mockjs')
   Mock.Random.extend({
@@ -59,3 +85,34 @@
     }
   }
   ```
+
+## demo with webpack
+
+dev-server.js
+```javascript
+// ...
+var mockTable = config.dev.mockTable
+Object.keys(mockTable).forEach(function (context) {
+  var options = mockTable[context]
+  var allowOrigin = []
+  if (options.allowOrigin) allowOrigin = options.allowOrigin
+  app.use(context, apiMiddleware(options.apiConfig, allowOrigin));
+})
+// ...
+```
+
+config/index.js
+```javascript
+var mockConfig = [{
+  path:'/demo/:id',
+  file:'/demo'// 对应的模拟数据文件api/demo.js
+}]
+module.exports = {
+  // ...
+  dev: {
+    // ...
+    mockTable: {
+      '/api': { // 要使用模拟数据的url路径
+        mockConfig
+      }
+    },
