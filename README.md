@@ -94,9 +94,11 @@ dev-server.js
 var mockTable = config.dev.mockTable
 Object.keys(mockTable).forEach(function (context) {
   var options = mockTable[context]
-  var allowOrigin = []
-  if (options.allowOrigin) allowOrigin = options.allowOrigin
-  app.use(context, apiMiddleware(options.apiConfig, allowOrigin));
+  app.use(context, apiMiddleware(
+    options.apiConfig,
+    options.allowOrigin,
+    options.supportCROSCookie
+  ));
 })
 // ...
 ```
@@ -113,6 +115,8 @@ module.exports = {
     // ...
     mockTable: {
       '/api': { // 要使用模拟数据的url路径
-        mockConfig
+        mockConfig,
+        allowOrigin: ['http://localhost:8080'],
+        supportCROSCookie: true
       }
     },
