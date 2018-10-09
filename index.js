@@ -2,7 +2,7 @@
 
 const creatApi = require('./lib/router')
 
-module.exports = function (apiConfig, allowOrigin, supportCROSCookie) {
-  const apiRouters = new creatApi(apiConfig, allowOrigin, supportCROSCookie)
+module.exports = function (mockConfig) {
+  const apiRouters = new creatApi(mockConfig)
   return apiRouters.run()
 }

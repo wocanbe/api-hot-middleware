@@ -15,7 +15,7 @@
     path:'/demo/:id',
     file:'/demo'
   }]
-  app.use('/api', apiMiddleware(apiConfig));
+  app.use('/api', apiMiddleware({apiConfig: apiConfig}));
 ```
 
 备注：
@@ -94,11 +94,7 @@ dev-server.js
 var mockTable = config.dev.mockTable
 Object.keys(mockTable).forEach(function (context) {
   var options = mockTable[context]
-  app.use(context, apiMiddleware(
-    options.apiConfig,
-    options.allowOrigin,
-    options.supportCROSCookie
-  ));
+  app.use(context, apiMiddleware(options));
 })
 // ...
 ```
@@ -116,7 +112,11 @@ module.exports = {
     mockTable: {
       '/api': { // 要使用模拟数据的url路径
         mockConfig,
-        allowOrigin: ['http://localhost:8080'],
-        supportCROSCookie: true
+        allowOrigin: ['http://localhost:8080'], // 域名白名单
+        crosCookie: true, // 允许跨域cookie，默认false
+        unsafeMode: true // 允许非安全的get请求，默认false
       }
     },
+  }
+}
+```
